@@ -16,8 +16,13 @@
         Java implementation of https://github.com/barrett777/Heroes.ReplayParser
     </description>
 
+    <scm>
+        <url>https://github.com/eivindveg/HotSReplayParser</url>
+    </scm>
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <github.global.server>github</github.global.server>
     </properties>
 
     <licenses>
