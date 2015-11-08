@@ -51,19 +51,12 @@ public class MpqArchive {
     public Map<String, ByteBuffer> getFiles(String... filesToExtract) throws IOException {
         Map<String, ByteBuffer> map = new HashMap<>();
         try (FileInputStream inputStream = new FileInputStream(file);
-             FileChannel fileChannel = inputStream.getChannel();) {
+             FileChannel fileChannel = inputStream.getChannel()) {
             header = buildHeader(fileChannel);
-            int hashTableSize = header.getNumberOfHashEntries() * 16;
-            long hashTablePosition = header.getHashTablePosition() + header.getPosition();
-            final ByteBuffer encryptedHashTable = wrap(fileChannel.map(FileChannel.MapMode.READ_ONLY, hashTablePosition, hashTableSize)).order(LITTLE_ENDIAN);
-            final ByteBuffer hashTable = Decryption.decryptTable(encryptedHashTable, HASH_TABLE_KEY).order(LITTLE_ENDIAN);
+            final ByteBuffer hashTable = getHashTable(fileChannel);
 
-            int blocks = header.getNumberOfBlockEntries();
-            int blockTableSize = blocks * BLOCK_TABLE_SIZE;
-            long blockTablePosition = header.getBlockTablePosition() + header.getPosition();
-
-            ByteBuffer encryptedBlockTable = wrap(fileChannel.map(FileChannel.MapMode.READ_ONLY, blockTablePosition, blockTableSize)).order(LITTLE_ENDIAN);
-            ByteBuffer blockTable = Decryption.decryptTable(encryptedBlockTable, BLOCK_TABLE_KEY).order(LITTLE_ENDIAN);
+            int blockTableSize = getBlockTableSize();
+            ByteBuffer blockTable = getBlockTable(fileChannel, blockTableSize);
 
             List<MpqFile> mpqFiles = getMpqFiles(hashTable, blockTableSize, blockTable);
             getMpqFileByName(mpqFiles, LIST_FILE_NAME).ifPresent(
@@ -71,6 +64,25 @@ public class MpqArchive {
 
         }
         return map;
+    }
+
+    private ByteBuffer getBlockTable(FileChannel fileChannel, int blockTableSize) throws IOException {
+        long blockTablePosition = header.getBlockTablePosition() + header.getPosition();
+
+        ByteBuffer encryptedBlockTable = wrap(fileChannel.map(FileChannel.MapMode.READ_ONLY, blockTablePosition, blockTableSize)).order(LITTLE_ENDIAN);
+        return Decryption.decryptTable(encryptedBlockTable, BLOCK_TABLE_KEY).order(LITTLE_ENDIAN);
+    }
+
+    private int getBlockTableSize() {
+        int blocks = header.getNumberOfBlockEntries();
+        return blocks * BLOCK_TABLE_SIZE;
+    }
+
+    private ByteBuffer getHashTable(FileChannel fileChannel) throws IOException {
+        int hashTableSize = header.getNumberOfHashEntries() * 16;
+        long hashTablePosition = header.getHashTablePosition() + header.getPosition();
+        final ByteBuffer encryptedHashTable = wrap(fileChannel.map(FileChannel.MapMode.READ_ONLY, hashTablePosition, hashTableSize)).order(LITTLE_ENDIAN);
+        return Decryption.decryptTable(encryptedHashTable, HASH_TABLE_KEY).order(LITTLE_ENDIAN);
     }
 
     private void initFileBuffers(Map<String, ByteBuffer> map, FileChannel fileChannel,
