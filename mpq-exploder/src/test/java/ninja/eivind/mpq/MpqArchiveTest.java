@@ -1,5 +1,6 @@
 package ninja.eivind.mpq;
 
+import ninja.eivind.mpq.models.MpqException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -44,6 +45,16 @@ public class MpqArchiveTest {
             FileChannel channel = fileInputStream.getChannel()) {
             archive.buildHeader(channel);
         }
+    }
+
+    @Test(expected = MpqException.class)
+    public void testTextFileThrowsMpqException() throws IOException {
+        URL resource = ClassLoader.getSystemClassLoader().getResource("test.txt");
+        assertNotNull("Could not load test resource", resource);
+        fileName = resource.getFile();
+        archive = new MpqArchive(fileName);
+
+        archive.getFiles();
     }
 
     @Test

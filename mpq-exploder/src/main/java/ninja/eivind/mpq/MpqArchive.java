@@ -7,6 +7,7 @@ import ninja.eivind.mpq.streams.MpqFileInputStream;
 import ninja.eivind.mpq.utils.Decryption;
 
 import java.io.*;
+import java.nio.BufferUnderflowException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.MappedByteBuffer;
@@ -139,23 +140,31 @@ public class MpqArchive {
         return files;
     }
 
-    MpqHeader buildHeader(FileChannel fileChannel) throws IOException {
+    MpqHeader buildHeader(FileChannel fileChannel) {
         final ByteBuffer buffer = ByteBuffer.allocate(8).order(ByteOrder.LITTLE_ENDIAN);
 
         int position = 0;
-        while (true) {
-            fileChannel.read(buffer, position);
-            buffer.flip();
-            if (buffer.getInt() == MpqHeader.SIGNATURE) {
-                final int length = buffer.getInt();
-                final ByteBuffer headerBuffer = ByteBuffer.allocate(length - 8).order(ByteOrder.LITTLE_ENDIAN);
+        try {
+            while (true) {
 
-                fileChannel.read(headerBuffer, position + 8);
-                headerBuffer.flip();
-                return new MpqHeaderBuilder(headerBuffer, length, position).build();
+                fileChannel.read(buffer, position);
+
+                buffer.flip();
+                if (buffer.getInt() == MpqHeader.SIGNATURE) {
+                    final int length = buffer.getInt();
+                    final ByteBuffer headerBuffer = ByteBuffer.allocate(length - 8).order(ByteOrder.LITTLE_ENDIAN);
+
+                    fileChannel.read(headerBuffer, position + 8);
+                    headerBuffer.flip();
+                    return new MpqHeaderBuilder(headerBuffer, length, position).build();
+                }
+                buffer.clear();
+                position += buffer.limit();
             }
-            buffer.clear();
-            position += buffer.limit();
+        } catch (IOException e) {
+            throw new MpqException("Could not read headers from file " + file, e);
+        } catch (BufferUnderflowException e) {
+            throw new MpqException("File " + file + "not parseable as Mpq file", e);
         }
     }
 }
