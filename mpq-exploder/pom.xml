@@ -6,7 +6,7 @@
 
     <groupId>ninja.eivind.hots</groupId>
     <artifactId>mpq-exploder</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>0.1.0</version>
 
     <description>
         Modern re-implementation of https://github.com/darthdeus/replaycruncher-client
