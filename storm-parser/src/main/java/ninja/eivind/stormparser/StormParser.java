@@ -1,6 +1,7 @@
 package ninja.eivind.stormparser;
 
 import ninja.eivind.mpq.MpqArchive;
+import ninja.eivind.stormparser.builders.PlayerBuilder;
 import ninja.eivind.stormparser.builders.TrackerEventStructureBuilder;
 import ninja.eivind.mpq.models.MpqException;
 import ninja.eivind.stormparser.models.Player;
@@ -102,7 +103,10 @@ public class StormParser {
 
             TrackerEventStructure[] array = structure.getDictionary().get(0L).getOptionalData().getArray();
 
-            List<Player> players = Arrays.stream(array).map(Player::new).collect(Collectors.toList());
+            List<Player> players = Arrays.stream(array)
+                    .map(PlayerBuilder::new)
+                    .map(PlayerBuilder::build)
+                    .collect(Collectors.toList());
 
             return players.stream()
                     .map(Player::getBNetId)

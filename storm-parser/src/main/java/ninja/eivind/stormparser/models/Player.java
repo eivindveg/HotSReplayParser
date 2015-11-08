@@ -6,10 +6,6 @@ package ninja.eivind.stormparser.models;
 public class Player {
     private String bNetId;
 
-    public Player(TrackerEventStructure item) {
-        this.bNetId = String.valueOf(item.getDictionary().get(1L).getDictionary().get(4L).getVarInt());
-    }
-
     public void setBNetId(String bNetId) {
         this.bNetId = bNetId;
     }

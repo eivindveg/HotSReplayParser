@@ -26,9 +26,9 @@ public class TrackerEventStructureBuilder implements Builder<TrackerEventStructu
         structure.setDataType(dataType);
         switch (dataType) {
             case 0x00:
-                long size = reader.readVariableUnsignedInt();
+                final long size = reader.readVariableUnsignedInt();
                 //System.out.println("Reading array of size " + size);
-                TrackerEventStructure[] array = new TrackerEventStructure[(int) size];
+                final TrackerEventStructure[] array = new TrackerEventStructure[(int) size];
                 for (int i = 0; i < array.length; i++) {
                     array[i] = new TrackerEventStructureBuilder(reader).build();
                 }
