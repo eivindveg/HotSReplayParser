@@ -28,9 +28,6 @@ public class MpqArchive {
     private MpqHeader header;
 
     public MpqArchive(File file) {
-        if (!file.exists()) {
-            throw new UnsupportedOperationException("Could not locate file " + file);
-        }
         this.file = file;
     }
 
