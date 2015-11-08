@@ -140,7 +140,7 @@ public class MpqArchive {
         return files;
     }
 
-    MpqHeader buildHeader(FileChannel fileChannel) {
+    protected MpqHeader buildHeader(FileChannel fileChannel) throws MpqException {
         final ByteBuffer buffer = ByteBuffer.allocate(8).order(ByteOrder.LITTLE_ENDIAN);
 
         int position = 0;
