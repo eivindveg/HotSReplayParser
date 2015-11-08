@@ -1,6 +1,7 @@
 package ninja.eivind.mpq;
 
 import ninja.eivind.mpq.builders.MpqHeaderBuilder;
+import ninja.eivind.mpq.models.MpqException;
 import ninja.eivind.mpq.streams.ByteBufferBackedInputStream;
 import ninja.eivind.mpq.streams.MpqFileInputStream;
 import ninja.eivind.mpq.utils.Decryption;
@@ -39,9 +40,8 @@ public class MpqArchive {
 
     public Map<String, ByteBuffer> getFiles(String... filesToExtract) throws IOException {
         Map<String, ByteBuffer> map = new HashMap<>();
-        try (FileInputStream inputStream = new FileInputStream(file)) {
-            FileChannel fileChannel = inputStream.getChannel();
-
+        try (FileInputStream inputStream = new FileInputStream(file);
+                FileChannel fileChannel = inputStream.getChannel();) {
             header = getHeader(fileChannel);
             int hashTableSize = header.getNumberOfHashEntries() * 16;
             long hashTablePosition = header.getHashTablePosition() + header.getPosition();
@@ -56,29 +56,32 @@ public class MpqArchive {
             ByteBuffer blockTable = Decryption.decryptTable(encryptedBlockTable, BLOCK_TABLE_KEY).order(LITTLE_ENDIAN);
 
             List<MpqFile> mpqFiles = getMpqFiles(hashTable, blockTableSize, blockTable);
-            Optional<MpqFile> listFileOptional = getMpqFileByName(mpqFiles, LIST_FILE_NAME);
-            if (listFileOptional.isPresent()) {
-                MpqFile listFile = listFileOptional.get();
-
-                try (InputStream listFileInputStream = getInputStream(listFile, fileChannel);
-                     BufferedReader reader = new BufferedReader(new InputStreamReader(listFileInputStream))) {
-                    String fileName;
-                    while((fileName = reader.readLine()) != null) {
-                        if (Arrays.asList(filesToExtract).contains(fileName)) {
-                            Optional<MpqFile> mpqFileOptional = getMpqFileByName(mpqFiles, fileName);
-                            if (!mpqFileOptional.isPresent()) {
-                                throw new FileNotFoundException("Could not locate file in archive");
-                            }
-                            MpqFile mpqFile = mpqFileOptional.get();
-                            mpqFile.setName(fileName);
-                            map.put(fileName, new MpqFileMapper(mpqFile).map(getInputStream(mpqFile, fileChannel)));
-                        }
-                    }
-                }
-            }
+            getMpqFileByName(mpqFiles, LIST_FILE_NAME).ifPresent(
+                    (file) -> initFileBuffers(map, fileChannel, mpqFiles, file, filesToExtract));
 
         }
         return map;
+    }
+
+    private void initFileBuffers(Map<String, ByteBuffer> map, FileChannel fileChannel,
+            List<MpqFile> mpqFiles, MpqFile listFile, String... filesToExtract)
+    {
+        List<String> toExtract = Arrays.asList(filesToExtract);
+        try (InputStream listFileInputStream = getInputStream(listFile, fileChannel);
+            BufferedReader reader = new BufferedReader(new InputStreamReader(listFileInputStream))) {
+            String fileName;
+            while((fileName = reader.readLine()) != null) {
+                if (toExtract.contains(fileName)) {
+                    MpqFile mpqFile = getMpqFileByName(mpqFiles, fileName).
+                            orElseThrow(()->new FileNotFoundException("Could not locate file in archive"));
+                    mpqFile.setName(fileName);
+                    map.put(fileName, new MpqFileMapper(mpqFile).map(getInputStream(mpqFile, fileChannel)));
+                }
+            }
+        } catch (IOException e)
+        {
+           throw new MpqException("Could not construct file buffers" , e);
+        }
     }
 
     private ByteBuffer wrap(MappedByteBuffer map) {
