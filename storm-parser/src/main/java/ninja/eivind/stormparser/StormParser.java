@@ -2,9 +2,11 @@ package ninja.eivind.stormparser;
 
 import ninja.eivind.mpq.MpqArchive;
 import ninja.eivind.stormparser.builders.PlayerBuilder;
+import ninja.eivind.stormparser.builders.ReplayBuilder;
 import ninja.eivind.stormparser.builders.TrackerEventStructureBuilder;
 import ninja.eivind.mpq.models.MpqException;
 import ninja.eivind.stormparser.models.Player;
+import ninja.eivind.stormparser.models.Replay;
 import ninja.eivind.stormparser.models.TrackerEventStructure;
 import ninja.eivind.stormparser.readers.BitReader;
 
@@ -30,6 +32,18 @@ public class StormParser {
 
     public StormParser(File file) {
         this.file = file;
+    }
+
+    public Replay parseReplay() {
+        MpqArchive archive = new MpqArchive(file);
+
+        try {
+            Map<String, ByteBuffer> files = archive.getFiles(REPLAY_DETAILS, REPLAY_INIT_DATA);
+
+            return new ReplayBuilder(files).build();
+        } catch (IOException e) {
+            throw new MpqException("Could not parse file", e);
+        }
     }
 
     public String getMatchId() {
@@ -95,6 +109,7 @@ public class StormParser {
         return concatBuilder.toString();
     }
 
+    @Deprecated
     private List<String> getBattleNetIds(Map<String, ByteBuffer> files) throws IOException {
         ByteBuffer byteBuffer = files.get(REPLAY_DETAILS);
         try (BitReader reader = new BitReader(new ByteArrayInputStream(byteBuffer.array()))) {
@@ -117,6 +132,7 @@ public class StormParser {
         }
     }
 
+    @Deprecated
     protected String getRandomSeed(Map<String, ByteBuffer> files) throws IOException {
         ByteBuffer byteBuffer = files.get(REPLAY_INIT_DATA);
         String[] playerList;
