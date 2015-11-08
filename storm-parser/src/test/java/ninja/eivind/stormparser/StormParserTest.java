@@ -38,29 +38,10 @@ public class StormParserTest {
     }
 
     @Test
-    public void testGetMatchId() {
-        String expected = "5543abb9-af35-3ce6-a026-e9d5517f2964";
-        String actual = parser.getMatchId();
-
-        assertEquals("Match ID is calculated as expected", expected, actual);
-    }
-
-    @Test
-    public void testConcatenate() {
-        final List<String> ids = Arrays.asList("246918", "325864", "330051", "368155", "896668", "897902", "958319", "1233098", "1580053", "2344031");
-        final String seed = "2906602328";
-        String expected = "2469183258643300513681558966688979029583191233098158005323440312906602328";
-        String actual = parser.concatenate(ids, seed);
-
-        assertEquals("Parser concatenates IDs and seed correctly", expected, actual);
-    }
-
-    @Test
     public void testGetRandomSeed() throws IOException {
         Replay replay = parser.parseReplay();
 
         InitData initData = replay.getInitData();
-
 
         final long expected = 2906602328L;
         final long actual = initData.getRandomValue();
