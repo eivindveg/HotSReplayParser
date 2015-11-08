@@ -18,4 +18,8 @@ public class Replay {
     public void setReplayDetails(ReplayDetails replayDetails) {
         this.replayDetails = replayDetails;
     }
+
+    public InitData getInitData() {
+        return initData;
+    }
 }

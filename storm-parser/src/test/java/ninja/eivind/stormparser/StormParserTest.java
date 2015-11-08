@@ -1,6 +1,8 @@
 package ninja.eivind.stormparser;
 
 import ninja.eivind.mpq.MpqArchive;
+import ninja.eivind.stormparser.models.Replay;
+import ninja.eivind.stormparser.models.replaycomponents.InitData;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -51,11 +53,14 @@ public class StormParserTest {
 
     @Test
     public void testGetRandomSeed() throws IOException {
-        MpqArchive archive = new MpqArchive(new File(fileName));
-        Map<String, ByteBuffer> files = archive.getFiles(StormParser.REPLAY_INIT_DATA);
-        final String expected = "2906602328";
-        final String actual = parser.getRandomSeed(files);
+        Replay replay = parser.parseReplay();
 
-        assertEquals("Parser returns correct random seed as String", expected, actual);
+        InitData initData = replay.getInitData();
+
+
+        final long expected = 2906602328L;
+        final long actual = initData.getRandomValue();
+
+        assertEquals("Parser returns correct random value as long", expected, actual);
     }
 }

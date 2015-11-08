@@ -21,7 +21,7 @@ public class PlayerListBuilder implements Builder<List<Player>> {
 
     @Override
     public List<Player> build() throws IOException {
-        TrackerEventStructure[] playerArray = structure.getDictionary().get(0).getOptionalData().getArray();
+        TrackerEventStructure[] playerArray = structure.getDictionary().get(0L).getOptionalData().getArray();
 
         return Arrays.stream(playerArray)
                 .map(PlayerBuilder::new)

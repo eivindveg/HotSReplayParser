@@ -15,4 +15,8 @@ public class InitData {
     public void setRandomValue(long randomValue) {
         this.randomValue = randomValue;
     }
+
+    public long getRandomValue() {
+        return randomValue;
+    }
 }
