@@ -75,11 +75,6 @@
     <dependencies>
         <dependency>
             <groupId>ninja.eivind.hots</groupId>
-            <artifactId>mpq-exploder</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>ninja.eivind.hots</groupId>
             <artifactId>storm-parser</artifactId>
             <version>${project.version}</version>
         </dependency>
