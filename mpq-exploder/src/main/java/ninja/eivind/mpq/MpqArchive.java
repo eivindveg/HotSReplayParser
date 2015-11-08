@@ -38,11 +38,15 @@ public class MpqArchive {
         this(new File(fileName));
     }
 
+    public MpqHeader getHeader() {
+        return header;
+    }
+
     public Map<String, ByteBuffer> getFiles(String... filesToExtract) throws IOException {
         Map<String, ByteBuffer> map = new HashMap<>();
         try (FileInputStream inputStream = new FileInputStream(file);
-                FileChannel fileChannel = inputStream.getChannel();) {
-            header = getHeader(fileChannel);
+             FileChannel fileChannel = inputStream.getChannel();) {
+            header = buildHeader(fileChannel);
             int hashTableSize = header.getNumberOfHashEntries() * 16;
             long hashTablePosition = header.getHashTablePosition() + header.getPosition();
             final ByteBuffer encryptedHashTable = wrap(fileChannel.map(FileChannel.MapMode.READ_ONLY, hashTablePosition, hashTableSize)).order(LITTLE_ENDIAN);
@@ -64,23 +68,21 @@ public class MpqArchive {
     }
 
     private void initFileBuffers(Map<String, ByteBuffer> map, FileChannel fileChannel,
-            List<MpqFile> mpqFiles, MpqFile listFile, String... filesToExtract)
-    {
+                                 List<MpqFile> mpqFiles, MpqFile listFile, String... filesToExtract) {
         List<String> toExtract = Arrays.asList(filesToExtract);
         try (InputStream listFileInputStream = getInputStream(listFile, fileChannel);
-            BufferedReader reader = new BufferedReader(new InputStreamReader(listFileInputStream))) {
+             BufferedReader reader = new BufferedReader(new InputStreamReader(listFileInputStream))) {
             String fileName;
-            while((fileName = reader.readLine()) != null) {
+            while ((fileName = reader.readLine()) != null) {
                 if (toExtract.contains(fileName)) {
                     MpqFile mpqFile = getMpqFileByName(mpqFiles, fileName).
-                            orElseThrow(()->new FileNotFoundException("Could not locate file in archive"));
+                            orElseThrow(() -> new FileNotFoundException("Could not locate file in archive"));
                     mpqFile.setName(fileName);
                     map.put(fileName, new MpqFileMapper(mpqFile).map(getInputStream(mpqFile, fileChannel)));
                 }
             }
-        } catch (IOException e)
-        {
-           throw new MpqException("Could not construct file buffers" , e);
+        } catch (IOException e) {
+            throw new MpqException("Could not construct file buffers", e);
         }
     }
 
@@ -140,16 +142,17 @@ public class MpqArchive {
         return files;
     }
 
-    MpqHeader getHeader(FileChannel fileChannel) throws IOException {
-        ByteBuffer buffer = ByteBuffer.allocate(8).order(ByteOrder.LITTLE_ENDIAN);
+    MpqHeader buildHeader(FileChannel fileChannel) throws IOException {
+        final ByteBuffer buffer = ByteBuffer.allocate(8).order(ByteOrder.LITTLE_ENDIAN);
 
         int position = 0;
         while (true) {
             fileChannel.read(buffer, position);
             buffer.flip();
             if (buffer.getInt() == MpqHeader.SIGNATURE) {
-                int length = buffer.getInt();
-                ByteBuffer headerBuffer = ByteBuffer.allocate(length - 8).order(ByteOrder.LITTLE_ENDIAN);
+                final int length = buffer.getInt();
+                final ByteBuffer headerBuffer = ByteBuffer.allocate(length - 8).order(ByteOrder.LITTLE_ENDIAN);
+
                 fileChannel.read(headerBuffer, position + 8);
                 headerBuffer.flip();
                 return new MpqHeaderBuilder(headerBuffer, length, position).build();

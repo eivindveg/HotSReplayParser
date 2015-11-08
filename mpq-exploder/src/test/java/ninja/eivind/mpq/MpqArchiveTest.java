@@ -32,7 +32,7 @@ public class MpqArchiveTest {
     public void testGetHeader() throws IOException {
         try(FileInputStream fileInputStream = new FileInputStream(fileName)) {
             FileChannel channel = fileInputStream.getChannel();
-            archive.getHeader(channel);
+            archive.buildHeader(channel);
         }
     }
 
