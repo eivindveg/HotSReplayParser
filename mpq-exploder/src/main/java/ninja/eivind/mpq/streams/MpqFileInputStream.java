@@ -19,7 +19,7 @@ public class MpqFileInputStream extends FilterInputStream {
     }
 
     public MpqFileInputStream(InputStream in, MpqFile entry, long inSize,
-                       long outSize) throws IOException {
+                              long outSize) throws IOException {
         super(init(in, entry, inSize, outSize));
     }
 

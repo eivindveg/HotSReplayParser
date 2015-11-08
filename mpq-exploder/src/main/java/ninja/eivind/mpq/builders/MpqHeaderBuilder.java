@@ -32,7 +32,7 @@ public class MpqHeaderBuilder implements Builder<MpqHeader> {
         header.setNumberOfHashEntries(buffer.getInt());
         header.setNumberOfBlockEntries(buffer.getInt());
 
-        if(header.getFormat() != 3) {
+        if (header.getFormat() != 3) {
             throw new UnsupportedOperationException("Only Version 3 Headers are supported. Header format: " + header.getFormat());
         }
 

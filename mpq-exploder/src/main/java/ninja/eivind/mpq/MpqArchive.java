@@ -43,6 +43,7 @@ public class MpqArchive {
     /**
      * Opens the {@link File} containing this MpqArchive, parsing every byte along the way until all the files asked for
      * have been added to the return value.
+     *
      * @param filesToExtract the names of the files within the archive to extract
      * @return a {@link Map} containing the contents of the requested files mapped by name
      * @throws IOException
