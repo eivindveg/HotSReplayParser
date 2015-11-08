@@ -5,7 +5,6 @@ import ninja.eivind.stormparser.models.Player;
 import ninja.eivind.stormparser.models.TrackerEventStructure;
 
 import java.io.UnsupportedEncodingException;
-import java.lang.String;
 
 /**
  * @author Eivind Vegsundvåg

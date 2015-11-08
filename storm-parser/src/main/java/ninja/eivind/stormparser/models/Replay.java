@@ -10,20 +10,19 @@ public class Replay {
     private InitData initData;
     private ReplayDetails replayDetails;
 
-    public void setInitData(InitData initData) {
-        this.initData = initData;
-    }
-
-
-    public void setReplayDetails(ReplayDetails replayDetails) {
-        this.replayDetails = replayDetails;
-    }
-
     public InitData getInitData() {
         return initData;
     }
 
+    public void setInitData(InitData initData) {
+        this.initData = initData;
+    }
+
     public ReplayDetails getReplayDetails() {
         return replayDetails;
+    }
+
+    public void setReplayDetails(ReplayDetails replayDetails) {
+        this.replayDetails = replayDetails;
     }
 }

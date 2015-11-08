@@ -12,11 +12,11 @@ public class InitData {
         this.playerList = playerList;
     }
 
-    public void setRandomValue(long randomValue) {
-        this.randomValue = randomValue;
-    }
-
     public long getRandomValue() {
         return randomValue;
+    }
+
+    public void setRandomValue(long randomValue) {
+        this.randomValue = randomValue;
     }
 }

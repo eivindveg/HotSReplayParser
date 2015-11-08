@@ -27,8 +27,8 @@ public class BinaryReader implements AutoCloseable {
         for (int k = 0; ; k += 7) {
             long loopValue = readByte() & 0xFF;
             value |= (loopValue & 0x7F) << k;
-            if((loopValue & 0x80) == 0) {
-                return (value & 1) > 0L ? - (value >> 1) : value >> 1;
+            if ((loopValue & 0x80) == 0) {
+                return (value & 1) > 0L ? -(value >> 1) : value >> 1;
             }
         }
     }

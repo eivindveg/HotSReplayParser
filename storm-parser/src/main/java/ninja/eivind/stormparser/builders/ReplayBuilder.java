@@ -28,10 +28,10 @@ public class ReplayBuilder implements Builder<Replay> {
     public Replay build() throws IOException {
         Replay replay = new Replay();
 
-        if(mpqFiles.containsKey(REPLAY_INIT_DATA)) {
+        if (mpqFiles.containsKey(REPLAY_INIT_DATA)) {
             replay.setInitData(new InitDataBuilder(mpqFiles.get(REPLAY_INIT_DATA)).build());
         }
-        if(mpqFiles.containsKey(REPLAY_DETAILS)) {
+        if (mpqFiles.containsKey(REPLAY_DETAILS)) {
             replay.setReplayDetails(new ReplayDetailsBuilder(mpqFiles.get(REPLAY_DETAILS)).build());
         }
 

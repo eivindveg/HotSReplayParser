@@ -108,7 +108,7 @@ public class BitReader implements AutoCloseable {
         boolean negative = (b & 1) == 1;
         long result = (b >> 1) & 0x3F;
         int bits = 6;
-        while((b & 0x80) != 0) {
+        while ((b & 0x80) != 0) {
             b = read(8);
             result |= (b & 0x7f) << bits;
             bits += 7;

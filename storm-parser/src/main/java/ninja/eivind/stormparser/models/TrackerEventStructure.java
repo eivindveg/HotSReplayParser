@@ -19,24 +19,8 @@ public class TrackerEventStructure {
         this.dataType = dataType;
     }
 
-    public void setArray(TrackerEventStructure[] array) {
-        this.array = array;
-    }
-
-    public void setDictionary(Map<Long, TrackerEventStructure> dictionary) {
-        this.dictionary = dictionary;
-    }
-
-    public void setOptionalData(TrackerEventStructure optionalData) {
-        this.optionalData = optionalData;
-    }
-
     public void setBlob(byte[] blob) {
         this.blob = blob;
-    }
-
-    public void setVarInt(long varInt) {
-        this.varInt = varInt;
     }
 
     public void setInteger(long integer) {
@@ -47,16 +31,32 @@ public class TrackerEventStructure {
         return dictionary;
     }
 
+    public void setDictionary(Map<Long, TrackerEventStructure> dictionary) {
+        this.dictionary = dictionary;
+    }
+
     public TrackerEventStructure getOptionalData() {
         return optionalData;
+    }
+
+    public void setOptionalData(TrackerEventStructure optionalData) {
+        this.optionalData = optionalData;
     }
 
     public TrackerEventStructure[] getArray() {
         return array;
     }
 
+    public void setArray(TrackerEventStructure[] array) {
+        this.array = array;
+    }
+
     public long getVarInt() {
         return varInt;
+    }
+
+    public void setVarInt(long varInt) {
+        this.varInt = varInt;
     }
 
     public String getBlobText() throws UnsupportedEncodingException {

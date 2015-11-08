@@ -42,7 +42,7 @@ public class TrackerEventStructureBuilder implements Builder<TrackerEventStructu
                 structure.setBlob(blob);
                 break;
             case 0x04:
-                if(reader.readByte() != 0) {
+                if (reader.readByte() != 0) {
                     TrackerEventStructure optionalData = new TrackerEventStructureBuilder(reader).build();
                     structure.setOptionalData(optionalData);
                 }
