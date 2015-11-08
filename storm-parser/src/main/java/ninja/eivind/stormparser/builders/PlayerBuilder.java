@@ -1,12 +1,10 @@
 package ninja.eivind.stormparser.builders;
 
 import ninja.eivind.mpq.builders.Builder;
-import ninja.eivind.stormparser.models.KeyValue;
 import ninja.eivind.stormparser.models.Player;
 import ninja.eivind.stormparser.models.TrackerEventStructure;
-import ninja.eivind.stormparser.readers.BinaryReader;
 
-import java.io.IOException;import java.lang.String;import java.lang.System;
+import java.lang.String;
 
 /**
  * @author Eivind Vegsundvåg
