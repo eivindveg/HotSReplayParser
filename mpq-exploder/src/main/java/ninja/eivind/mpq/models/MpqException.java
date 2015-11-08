@@ -1,7 +1,8 @@
 package ninja.eivind.mpq.models;
 
 /**
- * @author Eivind Vegsundvåg
+ * RuntimeException denoting that something went wrong in working with a .mpq file, mostly used to wrap specific
+ * exceptions as an unchecked exception
  */
 public class MpqException extends RuntimeException {
 

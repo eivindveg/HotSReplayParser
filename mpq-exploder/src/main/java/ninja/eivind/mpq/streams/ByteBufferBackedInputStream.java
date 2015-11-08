@@ -6,7 +6,7 @@ import java.io.InputStream;
 import java.nio.ByteBuffer;
 
 /**
- * @author Eivind Vegsundvåg
+ * InputStream that wraps around a ByteBuffer
  */
 public class ByteBufferBackedInputStream extends InputStream {
 

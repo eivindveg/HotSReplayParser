@@ -10,7 +10,7 @@ import java.io.InputStream;
 import java.util.zip.InflaterInputStream;
 
 /**
- * @author Eivind Vegsundvåg
+ * FilterInputStream that wraps around a FilterInputStream. Has its own logic for knowing how to wrap it.
  */
 public class MpqFileInputStream extends FilterInputStream {
 

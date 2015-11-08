@@ -5,7 +5,7 @@ import ninja.eivind.mpq.MpqHeader;
 import java.nio.ByteBuffer;
 
 /**
- * @author Eivind Vegsundvåg
+ * Builds an MpqHeader from a ByteBuffer
  */
 public class MpqHeaderBuilder implements Builder<MpqHeader> {
     private final ByteBuffer buffer;

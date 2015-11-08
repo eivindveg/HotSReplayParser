@@ -4,7 +4,7 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
 /**
- * @author Eivind Vegsundvåg
+ * Utility class for decrypting the HashTable of an Mpq file.
  */
 public final class Decryption {
     private static final int[] buffer;
