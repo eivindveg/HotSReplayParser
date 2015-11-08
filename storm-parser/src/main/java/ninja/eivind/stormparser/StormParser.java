@@ -46,6 +46,7 @@ public class StormParser {
         }
     }
 
+    @Deprecated
     public String getMatchId() {
         MpqArchive archive = new MpqArchive(file);
         try {
