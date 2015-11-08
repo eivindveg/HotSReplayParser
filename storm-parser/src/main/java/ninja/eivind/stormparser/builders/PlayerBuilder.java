@@ -4,6 +4,7 @@ import ninja.eivind.mpq.builders.Builder;
 import ninja.eivind.stormparser.models.Player;
 import ninja.eivind.stormparser.models.TrackerEventStructure;
 
+import java.io.UnsupportedEncodingException;
 import java.lang.String;
 
 /**
@@ -20,8 +21,15 @@ public class PlayerBuilder implements Builder<Player> {
     @Override
     public Player build() {
         final Player player = new Player();
-        final String bNetId = String.valueOf(structure.getDictionary().get(1L).getDictionary().get(4L).getVarInt());
 
+        final String shortName;
+        try {
+            shortName = structure.getDictionary().get(0L).getBlobText();
+            player.setShortName(shortName);
+        } catch (UnsupportedEncodingException ignored) {
+        }
+
+        final String bNetId = String.valueOf(structure.getDictionary().get(1L).getDictionary().get(4L).getVarInt());
         player.setBNetId(bNetId);
 
         return player;
