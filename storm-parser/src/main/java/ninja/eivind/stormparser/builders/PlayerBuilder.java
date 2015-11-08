@@ -1,5 +1,6 @@
 package ninja.eivind.stormparser.builders;
 
+import ninja.eivind.mpq.builders.Builder;
 import ninja.eivind.stormparser.models.KeyValue;
 import ninja.eivind.stormparser.models.Player;
 import ninja.eivind.stormparser.readers.BinaryReader;
@@ -9,13 +10,14 @@ import java.io.IOException;import java.lang.String;import java.lang.System;
 /**
  * @author Eivind Vegsundvåg
  */
-public class PlayerBuilder {
+public class PlayerBuilder implements Builder<Player> {
     private BinaryReader reader;
 
     public PlayerBuilder(BinaryReader reader) {
         this.reader = reader;
     }
 
+    @Override
     public Player build() throws IOException {
         Player player = new Player(null);
 

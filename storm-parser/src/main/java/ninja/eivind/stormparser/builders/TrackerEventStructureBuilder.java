@@ -1,5 +1,6 @@
 package ninja.eivind.stormparser.builders;
 
+import ninja.eivind.mpq.builders.Builder;
 import ninja.eivind.stormparser.models.TrackerEventStructure;
 import ninja.eivind.stormparser.readers.BitReader;
 
@@ -10,17 +11,18 @@ import java.util.Map;
 /**
  * @author Eivind Vegsundvåg
  */
-public class TrackerEventStructureBuilder {
+public class TrackerEventStructureBuilder implements Builder<TrackerEventStructure> {
     private BitReader reader;
 
     public TrackerEventStructureBuilder(BitReader reader) {
         this.reader = reader;
     }
 
+    @Override
     public TrackerEventStructure build() throws IOException {
-        TrackerEventStructure structure = new TrackerEventStructure();
+        final TrackerEventStructure structure = new TrackerEventStructure();
 
-        int dataType = reader.readByte();
+        final int dataType = reader.readByte();
         structure.setDataType(dataType);
         switch (dataType) {
             case 0x00:

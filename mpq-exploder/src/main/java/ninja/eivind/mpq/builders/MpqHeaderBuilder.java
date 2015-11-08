@@ -7,7 +7,7 @@ import java.nio.ByteBuffer;
 /**
  * @author Eivind Vegsundvåg
  */
-public class MpqHeaderBuilder {
+public class MpqHeaderBuilder implements Builder<MpqHeader> {
     private final ByteBuffer buffer;
     private final int length;
     private final int position;
@@ -19,6 +19,7 @@ public class MpqHeaderBuilder {
     }
 
 
+    @Override
     public MpqHeader build() {
         MpqHeader header = new MpqHeader();
         header.setPosition(position);
