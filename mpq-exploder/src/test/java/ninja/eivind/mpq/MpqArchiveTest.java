@@ -3,7 +3,9 @@ package ninja.eivind.mpq;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.ByteBuffer;
@@ -26,6 +28,14 @@ public class MpqArchiveTest {
         assertNotNull("Could not load test resource", resource);
         fileName = resource.getFile();
         archive = new MpqArchive(fileName);
+    }
+
+
+    @Test(expected = FileNotFoundException.class)
+    public void testFileNotFoundThrowsFileNotFoundException() throws IOException {
+        archive = new MpqArchive(new File("bogus"));
+
+        archive.getFiles();
     }
 
     @Test
