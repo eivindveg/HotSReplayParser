@@ -22,4 +22,8 @@ public class Replay {
     public InitData getInitData() {
         return initData;
     }
+
+    public ReplayDetails getReplayDetails() {
+        return replayDetails;
+    }
 }

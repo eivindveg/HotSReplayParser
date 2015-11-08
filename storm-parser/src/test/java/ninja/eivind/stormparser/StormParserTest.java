@@ -1,8 +1,10 @@
 package ninja.eivind.stormparser;
 
 import ninja.eivind.mpq.MpqArchive;
+import ninja.eivind.stormparser.models.Player;
 import ninja.eivind.stormparser.models.Replay;
 import ninja.eivind.stormparser.models.replaycomponents.InitData;
+import ninja.eivind.stormparser.models.replaycomponents.ReplayDetails;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -13,9 +15,11 @@ import java.nio.ByteBuffer;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Eivind Vegsundvåg
@@ -62,5 +66,17 @@ public class StormParserTest {
         final long actual = initData.getRandomValue();
 
         assertEquals("Parser returns correct random value as long", expected, actual);
+    }
+
+    @Test
+    public void testRushTeaPlayedInTestReplay() throws IOException {
+        Replay replay = parser.parseReplay();
+
+        ReplayDetails replayDetails = replay.getReplayDetails();
+
+        List<Player> players = replayDetails.getPlayers();
+        Optional<Player> rushTea = players.stream().filter(player -> player.getShortName().equals("RushTea")).findFirst();
+
+        assertTrue("RushTea took part in the test replay.", rushTea.isPresent());
     }
 }

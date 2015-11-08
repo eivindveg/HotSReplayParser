@@ -1,5 +1,6 @@
 package ninja.eivind.stormparser.models;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Map;
 
 /**
@@ -56,5 +57,9 @@ public class TrackerEventStructure {
 
     public long getVarInt() {
         return varInt;
+    }
+
+    public String getBlobText() throws UnsupportedEncodingException {
+        return blob != null ? new String(blob, "UTF-8") : null;
     }
 }
