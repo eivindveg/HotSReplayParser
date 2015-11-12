@@ -9,6 +9,10 @@
     <version>0.1.0</version>
     <packaging>pom</packaging>
 
+    <scm>
+        <url>https://github.com/eivindveg/HotSReplayParser.git</url>
+    </scm>
+
     <modules>
         <module>mpq-exploder</module>
         <module>storm-parser</module>
@@ -17,13 +21,5 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-
-    <dependencies>
-        <dependency>
-            <groupId>ninja.eivind.hots</groupId>
-            <artifactId>storm-parser</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-    </dependencies>
 
 </project>
