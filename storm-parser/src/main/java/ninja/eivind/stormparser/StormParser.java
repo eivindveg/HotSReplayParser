@@ -14,8 +14,9 @@ import java.util.Map;
  * @author Eivind Vegsundvåg
  */
 public class StormParser {
-    public static final String REPLAY_DETAILS = "replay.details";
     public static final String REPLAY_INIT_DATA = "replay.initData";
+    public static final String REPLAY_DETAILS = "replay.details";
+    public static final String REPLAY_ATTRIBUTES_EVENTS = "replay.attributes.events";
     private File file;
 
     public StormParser(File file) {
@@ -26,7 +27,7 @@ public class StormParser {
         MpqArchive archive = new MpqArchive(file);
 
         try {
-            Map<String, ByteBuffer> files = archive.getFiles(REPLAY_DETAILS, REPLAY_INIT_DATA);
+            Map<String, ByteBuffer> files = archive.getFiles(REPLAY_DETAILS, REPLAY_INIT_DATA, REPLAY_ATTRIBUTES_EVENTS);
 
             return new ReplayBuilder(files).build();
         } catch (IOException e) {

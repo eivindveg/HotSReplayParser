@@ -19,7 +19,7 @@ public enum PlayerType {
      * @return The PlayerType corresponding to the parameter
      * @throws UnsupportedOperationException if no type found
      */
-    public PlayerType ofType(String type) throws UnsupportedOperationException {
+    public static PlayerType ofType(String type) throws UnsupportedOperationException {
         PlayerType[] values = PlayerType.values();
         for (PlayerType value : values) {
             if (value.type.equals(type)) {
