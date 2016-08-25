@@ -19,16 +19,17 @@ public class AttributeEventsBuilder implements Builder<List<AttributeEvent>> {
 
     @Override
     public List<AttributeEvent> build() throws IOException {
-        int headerSize = 5;
+        final int headerSize = 5;
 
-        int numberOfAttributes = buffer.getInt(headerSize);
+        final int numberOfAttributes = buffer.get(headerSize) & 0xFF;
 
         AttributeEvent[] attributes = new AttributeEvent[numberOfAttributes];
 
         int initialOffset = 4 + headerSize;
-        for (int i = 0; i < numberOfAttributes; i++) {
-            buffer.position(initialOffset + (i * 13));
-            attributes[i] = new AttributeEventBuilder(buffer).build();
+        for (int i = 0; i < attributes.length; i++) {
+            int currentOffset = initialOffset + (i * 13);
+            buffer.position(currentOffset);
+            attributes[i] = new AttributeEventBuilder().apply(buffer);
         }
 
         return Arrays.asList(attributes);

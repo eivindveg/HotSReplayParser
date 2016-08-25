@@ -6,19 +6,15 @@ import ninja.eivind.stormparser.models.replaycomponents.AttributeEvent;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.util.function.Function;
 
 /**
  * @author Eivind Vegsundvåg
  */
-public class AttributeEventBuilder implements Builder<AttributeEvent> {
-    private final ByteBuffer buffer;
-
-    public AttributeEventBuilder(ByteBuffer buffer) {
-        this.buffer = buffer;
-    }
+public class AttributeEventBuilder implements Function<ByteBuffer, AttributeEvent> {
 
     @Override
-    public AttributeEvent build() throws IOException {
+    public AttributeEvent apply(ByteBuffer buffer) {
         AttributeEvent attributeEvent = new AttributeEvent();
 
         attributeEvent.setHeader(buffer.getInt());

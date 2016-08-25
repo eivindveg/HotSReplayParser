@@ -23,4 +23,16 @@ public class AttributeEvent {
     public void setValue(byte[] value) {
         this.value = value;
     }
+
+    public AttributeEventType getType() {
+        return type;
+    }
+
+    public byte[] getValue() {
+        return value;
+    }
+
+    public int getPlayerId() {
+        return playerId;
+    }
 }
