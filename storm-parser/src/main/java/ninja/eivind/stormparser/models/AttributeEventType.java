@@ -34,6 +34,11 @@ public enum AttributeEventType {
     HERO_VISIBILITY(4014),
     READYING_COUNT(4016),
 
+    DRAFT_TEAM1_BAN1(4023),
+    DRAFT_TEAM1_BAN1_LOCKED_IN(4024),
+    DRAFT_TEAM1_BAN2(4025),
+    DRAFT_TEAM1_BAN2_LOCKED_IN(4026),
+
     ARTIFACT_UNKNOWN_1(4101);
 
 
@@ -50,8 +55,7 @@ public enum AttributeEventType {
                 return value;
             }
         }
-        throw new UnsupportedOperationException("No PlayerType for type " + type);
-
+        return null;
     }
 }
 
