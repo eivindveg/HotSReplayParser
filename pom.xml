@@ -6,7 +6,7 @@
 
     <groupId>ninja.eivind.hots</groupId>
     <artifactId>hots-parsing</artifactId>
-    <version>0.1.1-SNAPSHOT</version>
+    <version>0.1.2.RELEASE</version>
     <packaging>pom</packaging>
 
     <name>
