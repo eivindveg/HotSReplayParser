@@ -1,7 +1,9 @@
 package ninja.eivind.stormparser;
 
 import ninja.eivind.mpq.MpqArchive;
+import ninja.eivind.mpq.models.MpqException;
 import ninja.eivind.stormparser.models.Player;
+import ninja.eivind.stormparser.models.PlayerType;
 import ninja.eivind.stormparser.models.Replay;
 import ninja.eivind.stormparser.models.replaycomponents.InitData;
 import ninja.eivind.stormparser.models.replaycomponents.ReplayDetails;
@@ -17,9 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * @author Eivind Vegsundvåg
@@ -59,5 +59,23 @@ public class StormParserTest {
         Optional<Player> rushTea = players.stream().filter(player -> player.getShortName().equals("RushTea")).findFirst();
 
         assertTrue("RushTea took part in the test replay.", rushTea.isPresent());
+    }
+
+    @Test
+    public void testRushTeaIsAHumanPlayer() {
+        Replay replay = parser.parseReplay();
+
+        ReplayDetails replayDetails = replay.getReplayDetails();
+
+        List<Player> players = replayDetails.getPlayers();
+        Player rushTea = players.stream()
+                .filter(player -> player.getShortName().equals("RushTea"))
+                .findFirst()
+                .orElseThrow(() -> new MpqException("Could not find RushTea", null));
+
+        PlayerType expected = PlayerType.PLAYER;
+        PlayerType actual = rushTea.getPlayerType();
+
+        assertSame("RushTea is a human player", expected, actual);
     }
 }

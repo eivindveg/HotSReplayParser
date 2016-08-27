@@ -1,6 +1,8 @@
 package ninja.eivind.stormparser.builders;
 
 import ninja.eivind.mpq.builders.Builder;
+import ninja.eivind.stormparser.appliers.AttributeEventsApplier;
+import ninja.eivind.stormparser.builders.replaycomponents.AttributeEventsBuilder;
 import ninja.eivind.stormparser.builders.replaycomponents.InitDataBuilder;
 import ninja.eivind.stormparser.builders.replaycomponents.ReplayDetailsBuilder;
 import ninja.eivind.stormparser.models.Replay;
@@ -9,13 +11,9 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.Map;
 
-/**
- * @author Eivind Vegsundvåg
- */
-public class ReplayBuilder implements Builder<Replay> {
+import static ninja.eivind.stormparser.StormParser.*;
 
-    public static final String REPLAY_INIT_DATA = "replay.initData";
-    public static final String REPLAY_DETAILS = "replay.details";
+public class ReplayBuilder implements Builder<Replay> {
 
     private Map<String, ByteBuffer> mpqFiles;
 
@@ -33,6 +31,10 @@ public class ReplayBuilder implements Builder<Replay> {
         }
         if (mpqFiles.containsKey(REPLAY_DETAILS)) {
             replay.setReplayDetails(new ReplayDetailsBuilder(mpqFiles.get(REPLAY_DETAILS)).build());
+        }
+
+        if (mpqFiles.containsKey(REPLAY_ATTRIBUTES_EVENTS)) {
+            new AttributeEventsApplier().apply(replay, new AttributeEventsBuilder(mpqFiles.get(REPLAY_ATTRIBUTES_EVENTS)).build());
         }
 
         return replay;

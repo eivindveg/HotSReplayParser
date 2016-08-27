@@ -6,6 +6,7 @@ package ninja.eivind.stormparser.models;
 public class Player {
     private String bNetId;
     private String shortName;
+    private PlayerType playerType;
 
     public String getBNetId() {
         return bNetId;
@@ -21,5 +22,13 @@ public class Player {
 
     public void setShortName(String shortName) {
         this.shortName = shortName;
+    }
+
+    public PlayerType getPlayerType() {
+        return playerType;
+    }
+
+    public void setPlayerType(PlayerType playerType) {
+        this.playerType = playerType;
     }
 }
