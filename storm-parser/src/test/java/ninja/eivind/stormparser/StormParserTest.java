@@ -34,12 +34,12 @@ public class StormParserTest {
         URL resource = ClassLoader.getSystemClassLoader().getResource("test.StormReplay");
         assertNotNull("Could not load test resource", resource);
         fileName = resource.getFile();
-        parser = new StormParser(new File(fileName));
+        parser = new StormParser();
     }
 
     @Test
     public void testGetRandomSeed() throws IOException {
-        Replay replay = parser.parseReplay();
+        Replay replay = parser.apply(new File(fileName));
 
         InitData initData = replay.getInitData();
 
@@ -51,7 +51,7 @@ public class StormParserTest {
 
     @Test
     public void testRushTeaPlayedInTestReplay() throws IOException {
-        Replay replay = parser.parseReplay();
+        Replay replay = parser.apply(new File(fileName));
 
         ReplayDetails replayDetails = replay.getReplayDetails();
 
@@ -63,7 +63,7 @@ public class StormParserTest {
 
     @Test
     public void testRushTeaIsAHumanPlayer() {
-        Replay replay = parser.parseReplay();
+        Replay replay = parser.apply(new File(fileName));
 
         ReplayDetails replayDetails = replay.getReplayDetails();
 

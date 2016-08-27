@@ -9,21 +9,18 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.Map;
+import java.util.function.Function;
 
 /**
  * @author Eivind Vegsundvåg
  */
-public class StormParser {
+public class StormParser implements Function<File, Replay> {
     public static final String REPLAY_INIT_DATA = "replay.initData";
     public static final String REPLAY_DETAILS = "replay.details";
     public static final String REPLAY_ATTRIBUTES_EVENTS = "replay.attributes.events";
-    private File file;
 
-    public StormParser(File file) {
-        this.file = file;
-    }
-
-    public Replay parseReplay() {
+    @Override
+    public Replay apply(File file) {
         MpqArchive archive = new MpqArchive(file);
 
         try {

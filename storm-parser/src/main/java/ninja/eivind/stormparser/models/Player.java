@@ -7,6 +7,8 @@ public class Player {
     private String bNetId;
     private String shortName;
     private PlayerType playerType;
+    private Integer battleNetRegionId;
+    private int battleTag;
 
     public String getBNetId() {
         return bNetId;
@@ -30,5 +32,17 @@ public class Player {
 
     public void setPlayerType(PlayerType playerType) {
         this.playerType = playerType;
+    }
+
+    public Integer getBattleNetRegionId() {
+        return battleNetRegionId;
+    }
+
+    public void setBattleNetRegionId(Integer battleNetRegionId) {
+        this.battleNetRegionId = battleNetRegionId;
+    }
+
+    public void setBattleTag(int battleTag) {
+        this.battleTag = battleTag;
     }
 }
