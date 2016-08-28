@@ -12,6 +12,9 @@ public class AttributeEventsApplier {
 
     public void apply(Replay replay, List<AttributeEvent> build) {
         for (AttributeEvent attributeEvent : build) {
+            if(attributeEvent == null) {
+                continue;
+            }
             switch(attributeEvent.getType()) {
                 case PLAYER_TYPE:
                     Player player = replay.getReplayDetails().getPlayers().get(attributeEvent.getPlayerId() - 1);

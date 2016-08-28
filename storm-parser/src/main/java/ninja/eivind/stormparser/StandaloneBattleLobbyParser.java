@@ -40,7 +40,6 @@ public class StandaloneBattleLobbyParser implements Function<File, Replay> {
         try {
             final byte[] data = Files.readAllBytes(file.toPath());
             final String dataString = new String(data, "UTF-8");
-            System.out.println(dataString);
             final int battleNetRegionId = getRegionId(dataString);
 
             List<Player> players = getPlayers(dataString, battleNetRegionId);
