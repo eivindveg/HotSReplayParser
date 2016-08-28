@@ -45,4 +45,8 @@ public class Player {
     public void setBattleTag(int battleTag) {
         this.battleTag = battleTag;
     }
+
+    public int getBattleTag() {
+        return battleTag;
+    }
 }
