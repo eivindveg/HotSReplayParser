@@ -12,7 +12,7 @@ public class AttributeEventsApplier {
 
     public void apply(Replay replay, List<AttributeEvent> build) {
         for (AttributeEvent attributeEvent : build) {
-            if(attributeEvent == null) {
+            if(attributeEvent == null || attributeEvent.getType() == null) {
                 continue;
             }
             switch(attributeEvent.getType()) {
