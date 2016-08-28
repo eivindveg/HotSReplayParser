@@ -43,6 +43,10 @@ public class StandaloneBattleLobbyParser implements Function<File, Replay> {
             final int battleNetRegionId = getRegionId(dataString);
 
             List<Player> players = getPlayers(dataString, battleNetRegionId);
+            for (int i = 0; i < players.size(); i++) {
+                int team = i >= 5 ? 1 : 0;
+                players.get(i).setTeam(team);
+            }
             ReplayDetails replayDetails = new ReplayDetails();
             replayDetails.setPlayers(players);
             replay.setReplayDetails(replayDetails);

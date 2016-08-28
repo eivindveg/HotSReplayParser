@@ -9,6 +9,7 @@ public class Player {
     private PlayerType playerType;
     private Integer battleNetRegionId;
     private int battleTag;
+    private int team;
 
     public String getBNetId() {
         return bNetId;
@@ -48,5 +49,13 @@ public class Player {
 
     public int getBattleTag() {
         return battleTag;
+    }
+
+    public void setTeam(int team) {
+        this.team = team;
+    }
+
+    public int getTeam() {
+        return team;
     }
 }
