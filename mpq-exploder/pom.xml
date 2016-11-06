@@ -7,7 +7,7 @@
     <parent>
         <groupId>ninja.eivind.hots</groupId>
         <artifactId>hots-parsing</artifactId>
-        <version>0.2.0.RELEASE</version>
+        <version>0.3.0.RELEASE</version>
     </parent>
     <artifactId>mpq-exploder</artifactId>
 

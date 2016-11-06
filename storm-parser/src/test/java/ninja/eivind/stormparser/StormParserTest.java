@@ -5,6 +5,7 @@ import ninja.eivind.mpq.models.MpqException;
 import ninja.eivind.stormparser.models.Player;
 import ninja.eivind.stormparser.models.PlayerType;
 import ninja.eivind.stormparser.models.Replay;
+import ninja.eivind.stormparser.models.replaycomponents.GameMode;
 import ninja.eivind.stormparser.models.replaycomponents.InitData;
 import ninja.eivind.stormparser.models.replaycomponents.ReplayDetails;
 import org.junit.Before;
@@ -59,6 +60,16 @@ public class StormParserTest {
         Optional<Player> rushTea = players.stream().filter(player -> player.getShortName().equals("RushTea")).findFirst();
 
         assertTrue("RushTea took part in the test replay.", rushTea.isPresent());
+    }
+
+    @Test
+    public void testBrawlsCanBeDetected() throws Exception {
+        Replay replay = parser.apply(new File(getClass().getResource("lost_caverns_brawl.StormReplay").getFile()));
+
+        InitData initData = replay.getInitData();
+        GameMode gameMode = initData.getGameMode();
+
+        assertSame(GameMode.BRAWL, gameMode);
     }
 
     @Test
