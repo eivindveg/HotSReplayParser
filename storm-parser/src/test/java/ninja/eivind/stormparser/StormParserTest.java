@@ -1,7 +1,7 @@
 package ninja.eivind.stormparser;
 
-import ninja.eivind.mpq.MpqArchive;
 import ninja.eivind.mpq.models.MpqException;
+import ninja.eivind.stormparser.meta.MetaInformation;
 import ninja.eivind.stormparser.models.Player;
 import ninja.eivind.stormparser.models.PlayerType;
 import ninja.eivind.stormparser.models.Replay;
@@ -14,10 +14,7 @@ import org.junit.Test;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.nio.ByteBuffer;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import static org.junit.Assert.*;
@@ -70,6 +67,15 @@ public class StormParserTest {
         GameMode gameMode = initData.getGameMode();
 
         assertSame(GameMode.BRAWL, gameMode);
+    }
+
+    @Test
+    public void testBuild52860ReplaysCanBeParsed() {
+        Replay replay = parser.apply(new File(getClass().getResource("braxis_holdout_b52860.StormReplay").getFile()));
+
+        MetaInformation metaInformation = replay.getMetaInformation();
+
+        assertEquals(52860, metaInformation.getBuild());
     }
 
     @Test

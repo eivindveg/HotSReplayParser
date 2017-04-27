@@ -1,6 +1,8 @@
 package ninja.eivind.stormparser.builders.replaycomponents;
 
 import ninja.eivind.mpq.builders.Builder;
+import ninja.eivind.mpq.models.MpqException;
+import ninja.eivind.stormparser.meta.MetaInformation;
 import ninja.eivind.stormparser.models.replaycomponents.GameMode;
 import ninja.eivind.stormparser.models.replaycomponents.InitData;
 import ninja.eivind.stormparser.readers.BitReader;
@@ -8,29 +10,49 @@ import ninja.eivind.stormparser.readers.BitReader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.util.function.BiFunction;
 
 /**
  * @author Eivind Vegsundvåg
  */
-public class InitDataBuilder implements Builder<InitData> {
+public class InitDataBuilder implements BiFunction<MetaInformation, ByteBuffer, InitData> {
 
-    private final ByteBuffer buffer;
+    private GameMode getGameMode(int gameModeValue) {
 
-    public InitDataBuilder(ByteBuffer buffer) {
-        this.buffer = buffer;
+        switch (gameModeValue) {
+            case 50021: // Versus AI
+            case 50041: // Practice
+                return GameMode.VERSUS_AI;
+            case 50001:
+                return GameMode.QUICK_MATCH;
+            case 50031:
+                return GameMode.BRAWL;
+            case 50051:
+                return GameMode.UNRACKED_DRAFT;
+            case 50061:
+                return GameMode.HERO_LEAGUE;
+            case 50071:
+                return GameMode.TEAM_LEAGUE;
+            default:
+                return GameMode.UNKNOWN;
+        }
     }
 
     @Override
-    public InitData build() throws IOException {
+    public InitData apply(MetaInformation metaInformation, ByteBuffer buffer) {
         InitData initData = new InitData();
 
         try (BitReader bitReader = new BitReader(new ByteArrayInputStream(buffer.array()))) {
-            int i = bitReader.readByte();
+            int i = (int) bitReader.read(5);
             //System.out.println(i);
 
             String[] playerList = new String[i];
             for (int j = 0; j < i; j++) {
-                playerList[j] = new String(bitReader.readBlobPrecededWithLength(8));
+                String playerName = new String(bitReader.readBlobPrecededWithLength(8));
+
+                if(!playerName.isEmpty()) {
+                    playerList[j] = playerName;
+                }
                 //System.out.println(playerList[j]);
 
                 if (bitReader.readBoolean()) {
@@ -79,13 +101,17 @@ public class InitDataBuilder implements Builder<InitData> {
                 bitReader.readBoolean(); // examine
                 bitReader.readBoolean(); // custom interface
 
-                bitReader.readInt(); // unknown getValue
+                bitReader.readInt(); // m_testType
 
                 bitReader.read(2); // observer
 
                 bitReader.readBlobPrecededWithLength(9); // m_hero, currently empty string
                 bitReader.readBlobPrecededWithLength(9); // m_skin, currently empty string
                 bitReader.readBlobPrecededWithLength(9); // m_mount, currently empty string
+                if(metaInformation.getMajorVersion() >= 2) {
+                    bitReader.readBlobPrecededWithLength(9);
+                    bitReader.readBlobPrecededWithLength(9);
+                }
                 bitReader.readBlobPrecededWithLength(7); // m_toonHandle, currently empty string
 
             }
@@ -122,29 +148,10 @@ public class InitDataBuilder implements Builder<InitData> {
 
             initData.setPlayerList(playerList);
 
+            return initData;
+        } catch (IOException e) {
+            throw new MpqException("Failed to parse initdata", e);
         }
 
-        return initData;
-    }
-
-    private GameMode getGameMode(int gameModeValue) {
-
-        switch (gameModeValue) {
-            case 50021: // Versus AI
-            case 50041: // Practice
-                return GameMode.VERSUS_AI;
-            case 50001:
-                return GameMode.QUICK_MATCH;
-            case 50031:
-                return GameMode.BRAWL;
-            case 50051:
-                return GameMode.UNRACKED_DRAFT;
-            case 50061:
-                return GameMode.HERO_LEAGUE;
-            case 50071:
-                return GameMode.TEAM_LEAGUE;
-            default:
-                return GameMode.UNKNOWN;
-        }
     }
 }

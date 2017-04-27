@@ -1,5 +1,6 @@
 package ninja.eivind.stormparser.models;
 
+import ninja.eivind.stormparser.meta.MetaInformation;
 import ninja.eivind.stormparser.models.replaycomponents.InitData;
 import ninja.eivind.stormparser.models.replaycomponents.ReplayDetails;
 
@@ -9,6 +10,7 @@ import ninja.eivind.stormparser.models.replaycomponents.ReplayDetails;
 public class Replay {
     private InitData initData;
     private ReplayDetails replayDetails;
+    private MetaInformation metaInformation;
 
     public InitData getInitData() {
         return initData;
@@ -24,5 +26,13 @@ public class Replay {
 
     public void setReplayDetails(ReplayDetails replayDetails) {
         this.replayDetails = replayDetails;
+    }
+
+    public void setMetaInformation(MetaInformation metaInformation) {
+        this.metaInformation = metaInformation;
+    }
+
+    public MetaInformation getMetaInformation() {
+        return metaInformation;
     }
 }
