@@ -137,14 +137,32 @@ public class InitDataBuilder implements BiFunction<MetaInformation, ByteBuffer, 
             bitReader.readInt(); // 64 bit int part 1: Client Debug Flags
             bitReader.readInt(); // 64 bit int part 2: Client Debug Flags
 
-            //if (gameBuild >= 43905 && bitReader.readBoolean()) {
-            if(bitReader.readBoolean()) {
+            // m_ammId
+            if (metaInformation.getBuild() >= 43905 && bitReader.readBoolean()) {
                 long gameModeValue = bitReader.readInt();
                 final GameMode gameMode;
                 gameMode = getGameMode((int) gameModeValue);
 
                 initData.setGameMode(gameMode);
             }
+
+            bitReader.read(3); // game speed
+
+            bitReader.read(3); // "game type"
+
+            int maxPlayers = (int) bitReader.read(5);
+            if(maxPlayers != 10) {
+                initData.setGameMode(GameMode.TRY_ME);
+            }
+
+            bitReader.read(5); // Max observers
+            bitReader.read(5); // Max players
+            bitReader.read(4); // +1 = Max Teams
+            bitReader.read(6); // Max colors
+            bitReader.read(8); // +1 = Max Races
+            bitReader.read(8); // Max controlers
+
+
 
             initData.setPlayerList(playerList);
 

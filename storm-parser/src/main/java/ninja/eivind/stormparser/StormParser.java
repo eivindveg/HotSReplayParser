@@ -24,8 +24,6 @@ public class StormParser implements Function<File, Replay> {
 
     @Override
     public Replay apply(File file) {
-
-
         try {
             byte[] bytes = Files.readAllBytes(file.toPath());
 
@@ -37,7 +35,7 @@ public class StormParser implements Function<File, Replay> {
             Map<String, ByteBuffer> files = archive.getFiles(REPLAY_DETAILS, REPLAY_INIT_DATA, REPLAY_ATTRIBUTES_EVENTS);
 
             return new ReplayBuilder().apply(metaInformation, files);
-        } catch (IOException e) {
+        } catch (Exception e) {
             throw new MpqException("Could not parse file " + file, e);
         }
     }
